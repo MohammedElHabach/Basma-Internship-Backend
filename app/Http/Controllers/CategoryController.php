@@ -39,37 +39,11 @@ class CategoryController extends Controller
 
     public function trackCategoryVisit(Request $request){
         $categoryId = $request->input('category_id'); 
-        // CategoryClick::create([
-        //     'category_id' => $categoryId,
-        //     'user_id' => auth()->user()->id,
-        // ]);
         
         Category::where('id', $categoryId)->increment('count_visits');
 
         return response()->json(['message' => 'Category visit tracked successfully']);
     }
-
-    // public function categoryClicksAggregates(Request $request)
-    // {
-    //     $period = $request->input('period'); 
-    //     $categoryId = $request->input('category_id'); 
-    //     $validPeriods = ['day', 'week', 'month', 'year'];
-
-    //     if (!in_array($period, $validPeriods)) {
-    //         return response()->json(['error' => 'Invalid period value'], 400);
-    //     }
-    //     $interval = '1 ' . $period; 
-
-    //     $aggregates = Category::select('categories.id', 'categories.name') 
-    //     ->selectRaw("SUM(CASE WHEN categories.updated_at >= NOW() - INTERVAL $interval THEN categories.count_visits ELSE 0 END) AS total_clicks")
-    //     ->selectRaw('COUNT(DISTINCT category_clicks.user_id) AS unique_clicks')
-    //     ->leftJoin('category_clicks', 'categories.id', '=', 'category_clicks.category_id')
-    //     ->where('category_clicks.created_at', '>=', now()->subDays(365)) 
-    //     ->groupBy('categories.id', 'categories.name') 
-    //     ->get();
-
-    //     return response()->json($aggregates);
-    // }
 
     public function displayCategoriesByVisits(Request $request) {
         $period = 24; // Period in hours
@@ -85,7 +59,7 @@ class CategoryController extends Controller
         ->orderByDesc('total_visits_last_24hrs')
         ->groupBy('categories.id', 'categories.name', 'categories.count_visits', 'categories.updated_at')
         ->get();
-        
+
         if ($categories) {
             return response()->json($categories);
         } else {
