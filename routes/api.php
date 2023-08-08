@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\NewsController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -33,3 +36,12 @@ Route::group([
 
 
 });
+//Categories routes
+Route::get('/categories', [CategoryController::class, 'index']);
+Route::post('/categories', [CategoryController::class, 'store']);
+Route::post('/categories/trackVisits', [CategoryController::class, 'trackCategoryVisit']);
+Route::get('/categories/displayCategoriesByVisits', [CategoryController::class, 'displayCategoriesByVisits']);
+
+//News routes
+Route::get('/news', [NewsController::class, 'index']);
+
