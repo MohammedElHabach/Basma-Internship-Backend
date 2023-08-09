@@ -44,4 +44,3 @@ Route::get('/categories/displayCategoriesByVisits', [CategoryController::class, 
 
 //News routes
 Route::get('/news', [NewsController::class, 'index']);
-
